@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -39,6 +40,14 @@ public class ArticleController {
       return "/article/create";
     }
     this.articleService.create(articleForm.getSubject(), articleForm.getContent());
-    return "redirect:/";
+    return "redirect:/article/list";
+  }
+
+  @GetMapping(value = "/detail/{id}")
+  public String detail(Model model,
+                       @PathVariable("id") Long id){
+    Article article = this.articleService.getArticle(id);
+    model.addAttribute("article", article);
+    return "/article/detail";
   }
 }

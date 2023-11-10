@@ -1,12 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Article;
+import com.example.demo.exception.DataNotFoundException.DataNotFoundException;
 import com.example.demo.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,5 +27,13 @@ public class ArticleService {
     article.setContent(content);
     article.setCreateDate(LocalDateTime.now());
     this.articleRepository.save(article);
+  }
+
+  public Article getArticle(Long id) {
+    Optional<Article> article = this.articleRepository.findById(id);
+    if (article.isPresent()){
+     return article.get();
+    }
+    throw new DataNotFoundException("Article not found");
   }
 }
