@@ -2,16 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
   <title>게시글 리스트</title>
 </head>
 <body>
   <h1>게시글 리스트</h1>
-  <table th:each="article : ${articleList}">
-    <th>
-        <span th:text="${article.id}"></span>
-        <a th:href="@{|/article/detail/${article.id}|}" th:text="${article.subject}"></a>
-        <span th:text="${article.createDate}"></span>
-    </th>
+  <div class="container my-3">
+  <table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성일자</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="article, loop : ${articleList}">
+          <td th:text="${loop.count}"></td>
+          <td>
+            <a th:href="@{|/article/detail/${article.id}|}" th:text="${article.subject}"></a>
+          </td>
+          <td th:text="${#temporals.format(article.createDate, 'yyy-MM-dd HH:mm')}"></td>
+      </tr>
+    </tbody>
   </table>
+  </div>
 </body>
 </html>
