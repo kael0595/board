@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ public class MemberJoinForm {
 
   private String password2;
 
+  @Email
   private String email;
 
 }
