@@ -8,15 +8,16 @@
   <h1>게시글 작성</h1>
   <div>
     <form th:action="@{/article/create}" th:object="${articleForm}" method="post">
-      <div>
-        <span>제목</span>
-        <input type="text" th:field="*{subject}">
+      <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+      <div class="mb-3">
+        <label for="subject" class="form-label">제목</label>
+        <input type="text" th:field="*{subject}" class="form-control">
       </div>
-      <div>
-        <span>내용</span>
-        <textarea name="content" id="content" cols="30" rows="10" th:field="*{content}"></textarea>
+      <div class="mb-3">
+        <label for="content" class="form-label">내용</label>
+        <textarea name="content" id="content" class="form-control" rows="10" th:field="*{content}"></textarea>
       </div>
-      <input type="submit" value="등록">
+      <input type="submit" value="등록" class="btn btn-primary my-2">
     </form>
   </div>
 </body>
