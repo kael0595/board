@@ -5,22 +5,29 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
-@Entity
 @Getter
 @Setter
+@Entity
 public class Answer {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Integer id;
 
+  @Column(columnDefinition = "TEXT")
   private String content;
 
   private LocalDateTime createDate;
 
-  private LocalDateTime modifyDate;
+  @ManyToOne
+  private Question question;
 
   @ManyToOne
-  private Article article;
+  private SiteUser author;
+
+  private LocalDateTime modifyDate;
+
+  @ManyToMany
+  Set<SiteUser> voter;
 }

@@ -9,22 +9,17 @@ import java.time.LocalDateTime;
 @Entity
 @Setter
 @Getter
-public class Member {
-
+public class SiteUser {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(unique = true)
-  private String userName;
+  private String username;
 
   private String password;
 
   @Column(unique = true)
   private String email;
-
-  private LocalDateTime createDate;
-
-  private LocalDateTime modifyDate;
 }
