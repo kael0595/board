@@ -86,7 +86,7 @@ public class QuestionService {
     this.questionRepository.save(question);
   }
 
-  public void viewCount(Question question){
+  public void increaseViewCount(Question question){
     question.setViewCount(question.getViewCount()+1);
     this.questionRepository.save(question);
   }
