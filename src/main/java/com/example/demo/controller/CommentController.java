@@ -73,7 +73,7 @@ public class CommentController {
     }
     this.commentService.modify(comment, commentForm.getContent());
     return String.format("redirect:/question/detail/%s#comment_%s",
-        comment.getAnswer().getId(), comment.getId());  }
+        comment.getAnswer().getQuestion().getId(), comment.getAnswer().getId()); }
   @PostMapping("/delete/{id}")
   public String delete(@PathVariable("id") Integer id,
                        Principal principal){
@@ -83,5 +83,5 @@ public class CommentController {
     }
     this.commentService.delete(comment);
     return String.format("redirect:/question/detail/%s#comment_%s",
-        comment.getAnswer().getId(), comment.getId());  }
+        comment.getAnswer().getQuestion().getId(), comment.getAnswer().getId());  }
 }
