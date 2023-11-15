@@ -12,15 +12,19 @@
     <div th:text="${user.username}"></div>
     <div th:text="${user.email}"></div>
     <div th:text="${user.createDate}"></div>
+    <h5 th:text="|${#lists.size(questionList)}개의 질문이 있습니다.|"></h5>
     <div th:each="question : ${questionList}">
       <div th:text="${question.subject}"></div>
     </div>
+    <h5 th:text="|${#lists.size(answerList)}개의 답변이 있습니다.|"></h5>
     <div th:each="answer : ${answerList}">
       <div th:text="${answer.content}"></div>
     </div>
+    <h5 th:text="|${#lists.size(commentList)}개의 댓글이 있습니다.|"></h5>
     <div th:each="comment : ${commentList}">
       <div th:text="${comment.content}"></div>
     </div>
   </div>
+</div>
 </body>
 </html>
