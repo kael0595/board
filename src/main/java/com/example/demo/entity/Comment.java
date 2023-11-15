@@ -9,21 +9,21 @@ import java.time.LocalDateTime;
 @Entity
 @Setter
 @Getter
-public class SiteUser {
+public class Comment {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(unique = true)
-  private String username;
-
-  private String password;
-
-  @Column(unique = true)
-  private String email;
+  private String content;
 
   private LocalDateTime createDate;
 
-  private LocalDateTime updateDate;
+  private LocalDateTime modifyDate;
+
+  @ManyToOne
+  private SiteUser author;
+
+  @ManyToOne
+  private Answer answer;
 }

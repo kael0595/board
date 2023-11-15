@@ -3,11 +3,12 @@
   <div class="my-3 border-bottom">
     <h4>회원가입</h4>
   </div>
-<form th:action="@{/user/join}" th:object="${userJoinForm}" method="post">
+<form th:action="@{/user/join}" th:object="${userCreateForm}" method="post">
   <div th:replace="~{form_errors :: formErrorsFragment}"></div>
   <div class="mb-3">
     <label for="username" class="form-label">사용자 ID</label>
     <input type="text" th:field="*{username}" class="form-control">
+    <input type="button" value="ID 중복확인" id="confirmButton">
   </div>
   <div class="mb-3">
     <label for="password1" class="form-label">비밀번호</label>
@@ -25,6 +26,5 @@
 </form>
   </div>
 <script>
-
 </script>
 </html>

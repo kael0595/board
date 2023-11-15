@@ -20,7 +20,7 @@ public class UserController {
 
   @GetMapping("/join")
   public String signup(UserCreateForm userCreateForm) {
-    return "signup_form";
+    return "/user/join";
   }
 
   @PostMapping("/join")

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.AnswerForm;
+import com.example.demo.dto.CommentForm;
 import com.example.demo.dto.QuestionForm;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.SiteUser;
@@ -41,7 +42,7 @@ public class QuestionController {
   }
 
   @GetMapping(value = "/detail/{id}")
-  public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm) {
+  public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm, CommentForm commentForm) {
     Question question = this.questionService.getQuestion(id);
     this.questionService.increaseViewCount(question);
     model.addAttribute("question", question);
