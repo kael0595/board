@@ -5,6 +5,8 @@
   <title>마이페이지</title>
 </head>
 <body>
+<div th:replace="layout"></div>
+<div layout:fragment="content">
   <h1>마이페이지</h1>
   <div>
     <div th:text="${user.username}"></div>
