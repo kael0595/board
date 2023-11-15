@@ -92,7 +92,7 @@ public class UserController {
 
   @PostMapping("/findPW")
   @ResponseBody
-  public String findPW(@RequestParam("email") String email, @RequestParam("userName") String userName){
+  public String findPW(@RequestParam("userEmaigit ") String email, @RequestParam("userName") String userName){
     SiteUser user = this.userService.getUserByEmailAndUsername(email, userName);
     if (user != null){
       mailController.sendEmailForPW(email, userName);

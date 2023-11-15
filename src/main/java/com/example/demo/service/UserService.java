@@ -44,8 +44,8 @@ public class UserService {
     } throw new DataNotFoundException("user not found");
   }
 
-  public SiteUser getUserByEmailAndUsername(String email, String userName) {
-    Optional<SiteUser> user = this.userRepository.findByEmailAndUsername(email, userName);
+  public SiteUser getUserByEmailAndUsername(String email, String username) {
+    Optional<SiteUser> user = this.userRepository.findByEmailAndUsername(email, username);
     if (user.isPresent()){
       return user.get();
     } throw new DataNotFoundException("user not found");
