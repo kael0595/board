@@ -1,14 +1,24 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.UserCreateForm;
+import com.example.demo.entity.Answer;
+import com.example.demo.entity.Comment;
+import com.example.demo.entity.Question;
 import com.example.demo.entity.SiteUser;
+import com.example.demo.service.AnswerService;
+import com.example.demo.service.CommentService;
+import com.example.demo.service.QuestionService;
 import com.example.demo.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -18,6 +28,12 @@ public class UserController {
   private final UserService userService;
 
   private final MailController mailController;
+
+  private final QuestionService questionService;
+
+  private final AnswerService answerService;
+
+  private final CommentService commentService;
 
   @GetMapping("/join")
   public String signup(UserCreateForm userCreateForm) {
@@ -64,7 +80,7 @@ public class UserController {
 
   @PostMapping("/findID")
   @ResponseBody
-  public String findID(@RequestParam("email") String email){
+  public String findID(@RequestParam("userEmail") String email){
     SiteUser user = this.userService.getUserByEmail(email);
     if (user != null){
       mailController.sendEmailForID(email, user.getUsername());
@@ -84,6 +100,20 @@ public class UserController {
     } else {
       return "redirect:/user/find";
     }
+  }
+
+  @GetMapping("/me")
+  public String me(Model model,
+                   Principal principal){
+    SiteUser user = this.userService.getUser(principal.getName());
+    List<Question> questionList = user.getQuestions();
+    List<Answer> answerList = user.getAnswers();
+    List<Comment> commentList = user.getComments();
+    model.addAttribute("user", user);
+    model.addAttribute("questionList",questionList);
+    model.addAttribute("answerList", answerList);
+    model.addAttribute("commentList", commentList);
+    return "/user/me";
   }
 
 }
