@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
@@ -34,5 +35,32 @@ public class UserService {
     } else {
       throw new DataNotFoundException("siteuser not found");
     }
+  }
+
+  public SiteUser getUserByEmail(String email) {
+    Optional<SiteUser> user = this.userRepository.findByEmail(email);
+    if (user.isPresent()){
+      return user.get();
+    } throw new DataNotFoundException("user not found");
+  }
+
+  public SiteUser getUserByEmailAndUsername(String email, String username) {
+    Optional<SiteUser> user = this.userRepository.findByEmailAndUsername(email, username);
+    if (user.isPresent()){
+      return user.get();
+    } throw new DataNotFoundException("user not found");
+  }
+
+  public String generateTempPassword() {
+    String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    StringBuilder sb = new StringBuilder();
+
+    Random random = new Random();
+    for (int i = 0; i < 10; i++) {
+      int index = random.nextInt(characters.length());
+      sb.append(characters.charAt(index));
+    }
+
+    return sb.toString();
   }
 }

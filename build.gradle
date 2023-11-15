@@ -22,20 +22,42 @@ repositories {
 }
 
 dependencies {
+	//JPA
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	//thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	testImplementation 'org.springframework.security:spring-security-test'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
+
+	//Web
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	//lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	//devtools
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	//mariaDB
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+	//valid
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	//spring security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	//markdown
 	implementation 'org.commonmark:commonmark:0.21.0'
+
+	//mail sender
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+
 
 
 }

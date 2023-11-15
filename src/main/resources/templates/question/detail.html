@@ -70,8 +70,10 @@
            th:text="삭제"></a>
       </div>
     </div>
+    <!-- 댓글 개수 표시   -->
     <h5 class="border-bottom my3 py-2"
         th:text="|${#lists.size(answer.commentList)}개의 댓글이 있습니다.|"></h5>
+    <!--  댓글 반복 시작  -->
     <div class="card my-3" th:each="comment : ${answer.commentList}">
       <a th:id="|comment_${comment.id}|"></a>
       <div class="card-body">
@@ -100,15 +102,15 @@
         </div>
       </div>
     </div>
+    <!--  댓글 반복 끝  -->
+    <!--  댓글 작성  -->
     <form th:action="@{|/comment/create/${answer.id}|}" th:object="${commentForm}" method="post" class="my-3">
       <div th:replace="~{form_errors :: formErrorsFragment}"></div>
-      <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" id="commentContent" class="form-control" rows="10"></textarea>
-      <textarea sec:authorize="isAuthenticated()" th:field="*{content}" id="commentContent" class="form-control" rows="10"></textarea>
+      <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" id="commentContent" class="form-control" rows="5"></textarea>
+      <textarea sec:authorize="isAuthenticated()" th:field="*{content}" id="commentContent" class="form-control" rows="5"></textarea>
       <input type="submit" value="댓글등록" class="btn btn-primary my-2">
     </form>
   </div>
-
-
   <!-- 답변 반복 끝  -->
   <!-- 답변 작성 -->
   <form th:action="@{|/answer/create/${question.id}|}" th:object="${answerForm}" method="post" class="my-3">

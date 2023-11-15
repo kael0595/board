@@ -1,15 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.UserCreateForm;
+import com.example.demo.entity.SiteUser;
 import com.example.demo.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -17,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
 
   private final UserService userService;
+
+  private final MailController mailController;
 
   @GetMapping("/join")
   public String signup(UserCreateForm userCreateForm) {
@@ -55,4 +56,34 @@ public class UserController {
   public String login() {
     return "/user/login";
   }
+
+  @GetMapping("/find")
+  public String find(){
+  return "/user/find";
+  }
+
+  @PostMapping("/findID")
+  @ResponseBody
+  public String findID(@RequestParam("email") String email){
+    SiteUser user = this.userService.getUserByEmail(email);
+    if (user != null){
+      mailController.sendEmailForID(email, user.getUsername());
+      return "true";
+    } else {
+      return "redirect:/user/find";
+    }
+  }
+
+  @PostMapping("/findPW")
+  @ResponseBody
+  public String findPW(@RequestParam("email") String email, @RequestParam("username") String username){
+    SiteUser user = this.userService.getUserByEmailAndUsername(email, username);
+    if (user != null){
+      mailController.sendEmailForPW(email, username);
+      return "true";
+    } else {
+      return "redirect:/user/find";
+    }
+  }
+
 }

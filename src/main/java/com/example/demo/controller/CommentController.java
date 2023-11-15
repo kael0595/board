@@ -31,7 +31,7 @@ public class CommentController {
   private final AnswerService answerService;
 
   @PostMapping("/create/{id}")
-  public String create(Model model,
+  public String createComment(Model model,
                        @PathVariable("id") Integer id,
                        @Valid CommentForm commentForm,
                        BindingResult bindingResult,
@@ -48,7 +48,7 @@ public class CommentController {
   }
 
   @GetMapping("/modify/{id}")
-  public String modify(CommentForm commentForm,
+  public String commentModify(CommentForm commentForm,
                               @PathVariable("id") Integer id,
                               Principal principal){
     Comment comment = this.commentService.getComment(id);
@@ -75,7 +75,7 @@ public class CommentController {
     return String.format("redirect:/question/detail/%s#comment_%s",
         comment.getAnswer().getQuestion().getId(), comment.getAnswer().getId()); }
   @PostMapping("/delete/{id}")
-  public String delete(@PathVariable("id") Integer id,
+  public String commentDelete(@PathVariable("id") Integer id,
                        Principal principal){
     Comment comment = this.commentService.getComment(id);
     if (!comment.getAuthor().getUsername().equals(principal.getName())){
