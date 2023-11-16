@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -62,5 +63,32 @@ public class UserService {
     }
 
     return sb.toString();
+  }
+
+  public void updatePW(SiteUser user, String password1) {
+    user.setPassword(password1);
+    this.userRepository.save(user);
+  }
+
+  public int IDCheck(String username) {
+   Optional<SiteUser> user = this.userRepository.findByUsername(username);
+    if (user.isPresent()){
+      int response = 1;
+      return response;
+    } else {
+      int response = 0;
+      return response;
+    }
+}
+
+  public int EmailCheck(String email) {
+    Optional<SiteUser> user = this.userRepository.findByEmail(email);
+    if (user.isPresent()){
+      int response = 1;
+      return response;
+    } else {
+      int response = 0;
+      return response;
+    }
   }
 }

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <title>마이페이지</title>
 </head>
 <body>
@@ -12,6 +13,8 @@
     <div th:text="${user.username}"></div>
     <div th:text="${user.email}"></div>
     <div th:text="${user.createDate}"></div>
+    <div>
+    </div>
     <h5 th:text="|${#lists.size(questionList)}개의 질문이 있습니다.|"></h5>
     <div th:each="question : ${questionList}">
       <div th:text="${question.subject}"></div>
@@ -27,4 +30,7 @@
   </div>
 </div>
 </body>
+<script>
+
+</script>
 </html>

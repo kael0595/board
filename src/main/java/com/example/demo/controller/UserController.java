@@ -92,7 +92,7 @@ public class UserController {
 
   @PostMapping("/findPW")
   @ResponseBody
-  public String findPW(@RequestParam("userEmaigit ") String email, @RequestParam("userName") String userName){
+  public String findPW(@RequestParam("userEmail ") String email, @RequestParam("userName") String userName){
     SiteUser user = this.userService.getUserByEmailAndUsername(email, userName);
     if (user != null){
       mailController.sendEmailForPW(email, userName);
@@ -116,4 +116,26 @@ public class UserController {
     return "/user/me";
   }
 
+  @PostMapping("/updatePW")
+  @ResponseBody
+  public String updatePW(Model model,
+                         UserCreateForm createForm,
+                         Principal principal){
+    SiteUser user = this.userService.getUser(principal.getName());
+    this.userService.updatePW(user, createForm.getPassword1());
+    return "true";
+  }
+  @PostMapping("/checkUsername")
+  @ResponseBody
+  public int checkUsername(@RequestParam("username") String username){
+    int response = userService.IDCheck(username);
+    return response;
+  }
+
+  @PostMapping("/checkEmail")
+  @ResponseBody
+  public int checkEmail(@RequestParam("email") String email){
+    int response = userService.EmailCheck(email);
+    return response;
+  }
 }
