@@ -5,6 +5,25 @@
   <title>관리자 페이지</title>
 </head>
 <body>
-
+<div>
+  <table>
+    <thead>
+    <tr>
+      <th>NO</th>
+      <th>아이디</th>
+      <th>이메일</th>
+      <th>가입일</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${userList}" th:if="${not #lists.isEmpty(userList)}">
+      <th th:text="${user.id}"></th>
+      <th th:text="${user.username}"></th>
+      <th th:text="${user.email}"></th>
+      <th th:text="${user.createDate}"></th>
+    </tr>
+    </tbody>
+  </table>
+</div>
 </body>
 </html>

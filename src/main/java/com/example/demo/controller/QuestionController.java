@@ -58,7 +58,8 @@ public class QuestionController {
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/create")
   public String questionCreate(@Valid QuestionForm questionForm,
-                               BindingResult bindingResult, Principal principal) {
+                               BindingResult bindingResult,
+                               Principal principal) {
     if (bindingResult.hasErrors()) {
       return "/question/create";
     }

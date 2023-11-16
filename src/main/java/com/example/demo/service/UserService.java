@@ -91,9 +91,7 @@ public class UserService {
       return response;
     }
   }
-
-  public List<SiteUser> getList() {
-    List<SiteUser> userList = this.userRepository.findAll();
-    return userList;
+  public List<SiteUser> getAll() {
+    return this.userRepository.findAll();
   }
 }

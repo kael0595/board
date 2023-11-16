@@ -22,7 +22,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" sec:authorize="isAuthenticated()"
-             th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/admin/}">관리자 페이지</a>
+             th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/admin/home}">관리자 페이지</a>
         </li>
       </ul>
     </div>
