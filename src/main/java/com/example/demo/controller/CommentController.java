@@ -30,7 +30,12 @@ public class CommentController {
   private final UserService userService;
   private final AnswerService answerService;
 
-  @PostMapping("/create/{id}")
+  @GetMapping("/create/answer/{id}")
+  public String createComment(CommentForm commentForm){
+    return "/comment/create";
+  }
+
+  @PostMapping("/create/answer/{id}")
   public String createComment(Model model,
                        @PathVariable("id") Integer id,
                        @Valid CommentForm commentForm,
@@ -74,7 +79,8 @@ public class CommentController {
     this.commentService.modify(comment, commentForm.getContent());
     return String.format("redirect:/question/detail/%s#comment_%s",
         comment.getAnswer().getQuestion().getId(), comment.getAnswer().getId()); }
-  @PostMapping("/delete/{id}")
+
+  @GetMapping("/delete/{id}")
   public String commentDelete(@PathVariable("id") Integer id,
                        Principal principal){
     Comment comment = this.commentService.getComment(id);

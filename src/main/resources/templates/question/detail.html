@@ -74,22 +74,20 @@
     <h5 class="border-bottom my3 py-2"
         th:text="|${#lists.size(answer.commentList)}개의 댓글이 있습니다.|"></h5>
     <!--  댓글 반복 시작  -->
-    <div class="card my-3" th:each="comment : ${answer.commentList}">
-      <a th:id="|comment_${comment.id}|"></a>
-      <div class="card-body">
-        <div class="card-text" th:utext="${@commonUtil.markdown(comment.content)}"></div>
-        <div class="d-flex justify-content-end">
-          <div th:if="${comment.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
-            <div class="mb-2">수정일</div>
-            <div th:text="${#temporals.format(comment.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
-          </div>
-          <div class="badge bg-light text-dark p-2 text-start">
-            <div class="mb-2">
-              <span th:if="${comment.author != null}" th:text="${comment.author.username}"></span>
-            </div>
-            <div th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></div>
-          </div>
-        </div>
+    <div class="mt-3" th:if="${not #lists.isEmpty(answer.commentList)}" >
+      <div class="comment py-2 text-muted" th:each="comment, index : ${answer.commentList}">
+        <span style="white-space: pre-line" th:text="${comment.content}"></span>
+        <span th:if="${comment.modifyDate != null}"
+              th:text="| - ${comment.author.username}, ${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}
+              (수정: ${#temporals.format(comment.modifyDate, 'yyyy-MM-dd HH:mm')})|"></span>
+        <span th:if="${comment.modifyDate == null}"
+              th:text="| - ${comment.author.username}, ${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}|"></span>
+        <a sec:authorize="isAuthenticated()"
+           th:if="${#authentication.getPrincipal().getUsername() == comment.author.username}"
+           th:href="@{|/comment/modify/${comment.id}|}" class="small">수정</a>
+        <a sec:authorize="isAuthenticated()"
+           th:if="${#authentication.getPrincipal().getUsername() == comment.author.username}"
+            href="javascript:void(0);" class="small delete" th:data-url="@{|/comment/delete/${comment.id}|}">삭제</a>
         <div class="my-3">
           <a th:href="@{|/comment/modify/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
              sec:authorize="isAuthenticated()"
@@ -101,15 +99,11 @@
              th:text="삭제"></a>
         </div>
       </div>
-    </div>
+      <div>
+        <a th:href="@{|/comment/create/answer/${answer.id}}" class="small"><small>댓글작성</small></a>
+      </div>
     <!--  댓글 반복 끝  -->
     <!--  댓글 작성  -->
-    <form th:action="@{|/comment/create/${answer.id}|}" th:object="${commentForm}" method="post" class="my-3">
-      <div th:replace="~{form_errors :: formErrorsFragment}"></div>
-      <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" id="commentContent" class="form-control" rows="5"></textarea>
-      <textarea sec:authorize="isAuthenticated()" th:field="*{content}" id="commentContent" class="form-control" rows="5"></textarea>
-      <input type="submit" value="댓글등록" class="btn btn-primary my-2">
-    </form>
   </div>
   <!-- 답변 반복 끝  -->
   <!-- 답변 작성 -->
