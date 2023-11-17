@@ -9,4 +9,8 @@ import org.springframework.stereotype.Service;
 public class GenFileService {
 
   private final GenFileRepository genFileRepository;
+
+  public void save(String username, Long id, String common, String profileImg, int i, String profileImgFilePath) {
+
+  }
 }

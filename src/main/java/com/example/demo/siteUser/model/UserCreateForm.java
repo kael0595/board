@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import java.time.LocalDateTime;
@@ -25,4 +26,6 @@ public class UserCreateForm {
   @NotEmpty(message = "이메일은 필수항목입니다.")
   @Email
   private String email;
+
+  private String profileImgPath;
 }

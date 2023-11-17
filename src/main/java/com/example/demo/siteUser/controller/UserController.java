@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -43,9 +44,9 @@ public class UserController {
   }
 
   @PostMapping("/join")
-  public String join(@Valid UserCreateForm userCreateForm,
-                     BindingResult bindingResult) {
-    RsData<SiteUser> joinRs = userService.join(userCreateForm.getUsername(), userCreateForm.getPassword1(),userCreateForm.getEmail());
+  public String userJoin(@Valid UserCreateForm userCreateForm) {
+    RsData<SiteUser> joinRs = userService.join(userCreateForm.getUsername(), userCreateForm.getPassword1(),
+                                                userCreateForm.getEmail(), userCreateForm.getProfileImgPath());
     if (joinRs.isFail()){
       return "redirect:/user/join?failMsg=" + Ut.url.encode(joinRs.getMsg());
     } else {

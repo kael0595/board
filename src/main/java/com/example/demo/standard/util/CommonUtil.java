@@ -1,4 +1,4 @@
-package com.example.demo.util;
+package com.example.demo.standard.util;
 
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;

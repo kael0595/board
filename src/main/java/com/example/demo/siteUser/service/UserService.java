@@ -1,13 +1,16 @@
 package com.example.demo.siteUser.service;
 
 import com.example.demo.base.RsData;
+import com.example.demo.genFile.service.GenFileService;
 import com.example.demo.siteUser.entity.SiteUser;
 import com.example.demo.exception.DataNotFoundException.DataNotFoundException;
 import com.example.demo.siteUser.repository.UserRepository;
+import com.example.demo.standard.util.Ut;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,10 +22,13 @@ import java.util.Random;
 public class UserService {
 
   private final UserRepository userRepository;
+
   private final PasswordEncoder passwordEncoder;
 
+  private final GenFileService genFileService;
+
   @Transactional
-  public RsData<SiteUser> join(String username, String email, String password) {
+  public RsData<SiteUser> join(String username, String email, String password, String profileImgFilePath) {
     if (findByUsername(username).isPresent()){
       return RsData.of("F-1","%S(은)는 사용중인 아이디입니다.".formatted(username));
     }
@@ -36,9 +42,18 @@ public class UserService {
 
         user = userRepository.save(user);
 
+        if (profileImgFilePath != null) {
+          saveProfileImg(user, profileImgFilePath);
+        }
 
         return RsData.of("S-1", "회원가입이 완료되었습니다.", user);
 
+  }
+
+  private void saveProfileImg(SiteUser user, String profileImgFilePath) {
+    if (Ut.str.isBlank(profileImgFilePath)) return;
+
+    genFileService.save(user.getUsername(), user.getId(),"common", "profileImg", 1, profileImgFilePath);
   }
 
   private Optional<SiteUser> findByUsername(String username) {

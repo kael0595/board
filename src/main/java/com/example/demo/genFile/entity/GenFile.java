@@ -12,15 +12,21 @@ import lombok.Setter;
 @Getter
 public class GenFile {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private String relTypeCode;
+
+  private long relId;
+
+  private String typeCode;
+
+  private String fileExtTypeCode;
+
+  private long fileSize;
+
+  private long fileNo;
+
+  private String fileExt;
+
+  private String fileDir;
 
   private String originFileName;
-
-  private String filePath;
-
-  private String fileType;
-
-  private long size;
 }
