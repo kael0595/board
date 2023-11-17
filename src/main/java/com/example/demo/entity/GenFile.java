@@ -17,4 +17,10 @@ public class GenFile {
   private Long id;
 
   private String originFileName;
+
+  private String filePath;
+
+  private String fileType;
+
+  private long size;
 }

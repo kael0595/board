@@ -100,15 +100,17 @@
           }
 
           form.submit();
+          submitJoinFormDone = true;
         }
       </script>
-    <form th:action="@{/user/join}" th:object="${userCreateForm}" method="post" onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6">
+    <form th:action="@{/user/join}" th:object="${userCreateForm}" method="post" enctype="multipart/form-data"
+          onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6">
       <div class="form-control" >
         <label class="label">
           <span class="label-text">사용자 ID </span>
         </label>
         <input type="text" name="username" id="username" maxlength="30" th:field="*{username}" class="input input-bordered" autofocus>
-        <button type="button" class="btn btn-primary" id="IDConfirmButton" onclick="IDCheck()">ID 중복확인</button>
+        <button type="button" class="btn btn-neutral" id="IDConfirmButton" onclick="IDCheck()">ID 중복확인</button>
       </div>
       <div class="form-control">
         <label for="password1" class="label cursor-pointer">
@@ -127,7 +129,7 @@
           <span class="label-text">사용자 email</span>
         </label>
         <input type="email" id="email" name="email" th:field="*{email}" class="input input-bordered" maxlength="80">
-        <button type="button" class="btn btn-block btn-primary gap-1" id="EmailConfirmButton" th:onclick="EmailCheck()">Email 중복확인</button>
+        <button type="button" class="btn btn-block btn-neutral" id="EmailConfirmButton" th:onclick="EmailCheck()">Email 중복확인</button>
       </div>
       <div class="form-control">
         <label class="label">
@@ -135,7 +137,7 @@
         </label>
         <input type="file" accept="image/jpeg, image/png, image/gif" class="file-input file-input-bordered" name="profileImg">
       </div>
-      <button type="submit" onclick="sendMail()" class="btn btn-primary">회원가입</button>
+      <button type="submit" onclick="sendMail()" class="btn btn-neutral">회원가입</button>
     </form>
     </div>
   </div>

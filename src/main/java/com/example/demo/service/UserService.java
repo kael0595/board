@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
+import com.example.demo.base.RsDate;
 import com.example.demo.entity.SiteUser;
 import com.example.demo.exception.DataNotFoundException.DataNotFoundException;
 import com.example.demo.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,14 +21,20 @@ public class UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
-  public SiteUser create(String username, String email, String password) {
-    SiteUser user = new SiteUser();
-    user.setUsername(username);
-    user.setEmail(email);
-    user.setPassword(passwordEncoder.encode(password));
-    user.setCreateDate(LocalDateTime.now());
-    this.userRepository.save(user);
-    return user;
+  @Transactional
+  public RsDate<SiteUser> create(String username, String email, String password) {
+    SiteUser user = SiteUser.
+        builder()
+        .username(username)
+        .password(passwordEncoder.encode(password))
+        .email(email)
+        .createDate(LocalDateTime.now())
+        .build();
+
+        user = userRepository.save(user);
+
+        return RsDate.of("S-1", "회원가입이 완료되었습니다.", user);
+
   }
 
   public SiteUser getUser(String username) {

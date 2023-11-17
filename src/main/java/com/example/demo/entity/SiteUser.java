@@ -1,8 +1,12 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,6 +14,9 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 public class SiteUser {
 
   @Id
