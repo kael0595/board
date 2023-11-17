@@ -75,6 +75,12 @@
             return;
           }
 
+          if(form.username.value.length < 4) {
+            form.username.focus();
+            alert('아이디를 4자 이상 입력해주세요.');
+            return;
+          }
+
           form.password1.value = form.password1.value.trim();
 
           if(form.password1.value.length == 0) {
@@ -83,11 +89,23 @@
             return;
           }
 
+         if(form.password1.value.length < 8) {
+            form.password1.focus();
+            alert('비밀번호를 8자 이상 입력해주세요.');
+            return;
+          }
+
           form.password2.value = form.password2.value.trim();
 
           if(form.password2.value.length == 0) {
             form.password2.focus();
             alert('비밀번호 확인을 입력해주세요.');
+            return;
+          }
+
+          if(form.password2.value.length < 8) {
+            form.password2.focus();
+            alert('비밀번호 확인을 8자 이상 입력해주세요.');
             return;
           }
 
