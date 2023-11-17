@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.QuestionForm;
 import com.example.demo.entity.Answer;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.SiteUser;
@@ -13,11 +14,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -61,12 +65,28 @@ public class QuestionService {
     }
   }
 
-  public void create(String subject, String content, SiteUser user) {
+  public void create(QuestionForm questionForm, SiteUser user, MultipartFile[] files) throws Exception {
+
+//    List<String> filename = new ArrayList<>();
+//    List<String> filepath = new ArrayList<>();
+//
+//    for (MultipartFile file : files){
+//      UUID uuid = UUID.randomUUID();
+//      String fileName = uuid + "+" + file.getOriginalFilename();
+//      String filePath = originPath + fileName;
+//
+//      File saveFile = new File(genFileDirPath, fileName);
+//      file.transferTo(saveFile);
+//
+//      filename.add(fileName);
+//      filepath.add(filePath);
+//    }
     Question q = new Question();
-    q.setSubject(subject);
-    q.setContent(content);
+    q.setSubject(questionForm.getSubject());
+    q.setContent(questionForm.getContent());
     q.setCreateDate(LocalDateTime.now());
     q.setAuthor(user);
+
     this.questionRepository.save(q);
   }
 

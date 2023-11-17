@@ -9,33 +9,30 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Setter
 @Getter
-public class Question {
+@Setter
+public class Review {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+  private Long id;
 
-  @Column(length = 200)
   private String subject;
 
-  @Column(columnDefinition = "TEXT")
   private String content;
-
-
-  @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
-  private List<Answer> answerList;
-
-  @ManyToOne
-  private SiteUser author;
 
   private LocalDateTime createDate;
 
   private LocalDateTime modifyDate;
 
-  @ManyToMany
-  Set<SiteUser> voter;
+  @ManyToOne
+  private SiteUser author;
+
+  @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+  private List<Answer> answerList;
 
   private int viewCount = 0;
+
+  @ManyToMany
+  Set<SiteUser> voter;
 }
