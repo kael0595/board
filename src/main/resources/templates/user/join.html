@@ -79,6 +79,12 @@
         <input type="email" id="email" name="email" th:field="*{email}" class="input input-bordered" maxlength="80">
         <button type="button" class="btn btn-block btn-primary gap-1" id="EmailConfirmButton" th:onclick="EmailCheck()">Email 중복확인</button>
       </div>
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">프로필 사진</span>
+        </label>
+        <input type="file" accept="image/jpeg, image/png, image/gif" class="file-input file-input-bordered" name="profileImg">
+      </div>
       <button type="submit" onclick="sendMail()" class="btn btn-primary">회원가입</button>
     </form>
     </div>
