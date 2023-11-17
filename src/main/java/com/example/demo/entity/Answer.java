@@ -25,6 +25,9 @@ public class Answer {
   private Question question;
 
   @ManyToOne
+  private Review review;
+
+  @ManyToOne
   private SiteUser author;
 
   private LocalDateTime modifyDate;

@@ -26,9 +26,9 @@
       <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
       <td class="text-start">
         <a th:href="@{|/review/detail/${review.id}|}" th:text="${review.subject}"></a>
-<!--        <span class="text-danger small ms-2" th:if="${#lists.size(review.answerList) > 0}"-->
-<!--              th:text="${#lists.size(review.answerList)}">-->
-<!--			        </span>-->
+        <span class="text-danger small ms-2" th:if="${#lists.size(review.answerList) > 0}"
+              th:text="${#lists.size(review.answerList)}">
+			        </span>
       </td>
       <td><span th:if="${review.author != null}" th:text="${review.author.username}"></span></td>
       <td>            <span th:text="${review.viewCount}"></span>
