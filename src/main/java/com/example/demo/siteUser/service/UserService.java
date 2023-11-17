@@ -4,18 +4,23 @@ import com.example.demo.base.RsData;
 import com.example.demo.genFile.service.GenFileService;
 import com.example.demo.siteUser.entity.SiteUser;
 import com.example.demo.exception.DataNotFoundException.DataNotFoundException;
+import com.example.demo.siteUser.model.UserCreateForm;
 import com.example.demo.siteUser.repository.UserRepository;
 import com.example.demo.standard.util.Ut;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -27,33 +32,38 @@ public class UserService {
 
   private final GenFileService genFileService;
 
+  @Value("${custom.genFileDirPath}")
+  private String genFileDirPath;
+  @Value("${custom.originPath}")
+  private String originPath;
+
   @Transactional
-  public RsData<SiteUser> join(String username, String email, String password, String profileImgFilePath) {
-    if (findByUsername(username).isPresent()){
-      return RsData.of("F-1","%S(은)는 사용중인 아이디입니다.".formatted(username));
+  public RsData<SiteUser> join(UserCreateForm userCreateForm, MultipartFile file) throws IOException {
+    if (findByUsername(userCreateForm.getUsername()).isPresent()){
+      return RsData.of("F-1","%S(은)는 사용중인 아이디입니다.".formatted(userCreateForm.getUsername()));
     }
-    SiteUser user = SiteUser.
-        builder()
-        .username(username)
-        .password(passwordEncoder.encode(password))
-        .email(email)
-        .createDate(LocalDateTime.now())
-        .build();
 
-        user = userRepository.save(user);
+    String projectPath = genFileDirPath;
 
-        if (profileImgFilePath != null) {
-          saveProfileImg(user, profileImgFilePath);
-        }
+    UUID uuid = UUID.randomUUID();
+    String fileName = uuid + "_" + file.getOriginalFilename();
+    String filePath = originPath + fileName;
+
+    File saveFile = new File(projectPath, fileName);
+    file.transferTo(saveFile);
+
+      SiteUser user = SiteUser.
+          builder()
+          .username(userCreateForm.getUsername())
+          .password(passwordEncoder.encode(userCreateForm.getPassword1()))
+          .email(userCreateForm.getEmail())
+          .createDate(LocalDateTime.now())
+          .filepath(filePath)
+          .filename(fileName)
+          .build();
+      user = userRepository.save(user);
 
         return RsData.of("S-1", "회원가입이 완료되었습니다.", user);
-
-  }
-
-  private void saveProfileImg(SiteUser user, String profileImgFilePath) {
-    if (Ut.str.isBlank(profileImgFilePath)) return;
-
-    genFileService.save(user.getUsername(), user.getId(),"common", "profileImg", 1, profileImgFilePath);
   }
 
   private Optional<SiteUser> findByUsername(String username) {

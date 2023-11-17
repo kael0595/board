@@ -29,3 +29,8 @@ logging:
   level:
     org.hibernate.orm.jdbc.bind: TRACE
     org.hibernate.orm.jdbc.extract: TRACE
+custom:
+  genFileDirPath: /Users/parkchang-gyu/Desktop/img_upload
+  resourcePath: file:///Users/parkchang-gyu/Desktop/img_upload/
+  requestPath: /img_upload/**
+  originPath: /img_upload/

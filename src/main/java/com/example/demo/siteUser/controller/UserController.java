@@ -44,9 +44,9 @@ public class UserController {
   }
 
   @PostMapping("/join")
-  public String userJoin(@Valid UserCreateForm userCreateForm) {
-    RsData<SiteUser> joinRs = userService.join(userCreateForm.getUsername(), userCreateForm.getPassword1(),
-                                                userCreateForm.getEmail(), userCreateForm.getProfileImgPath());
+  public String userJoin(@Valid UserCreateForm userCreateForm,
+                         @RequestParam("file") MultipartFile file) throws Exception{
+    RsData<SiteUser> joinRs = userService.join(userCreateForm, file);
     if (joinRs.isFail()){
       return "redirect:/user/join?failMsg=" + Ut.url.encode(joinRs.getMsg());
     } else {

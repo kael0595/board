@@ -51,4 +51,8 @@ public class SiteUser {
   private LocalDateTime createDate;
 
   private LocalDateTime updateDate;
+
+  private String filename;
+
+  private String filepath;
 }
