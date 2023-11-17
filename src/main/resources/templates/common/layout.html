@@ -29,21 +29,21 @@
         </label>
         <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
           <li class="nav-item">
-            <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
-            <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+            <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}"><i class="fa-solid fa-right-to-bracket"></i>로그인</a>
+            <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}"><i class="fa-solid fa-right-from-bracket"></i>로그아웃</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" th:href="@{/user/join}">회원가입</a>
+            <a class="nav-link" th:href="@{/user/join}"><i class="fa-sharp fa-solid fa-user-plus"></i>회원가입</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" th:href="@{/user/find}">ID/PW 찾기</a>
+            <a class="nav-link" th:href="@{/user/find}"><i class="fa-solid fa-users-viewfinder"></i>ID/PW 찾기</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/me}">마이 페이지</a>
+            <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/me}"><i class="fa-solid fa-user"></i>마이 페이지</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" sec:authorize="isAuthenticated()"
-               th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/admin/home}">관리자 페이지</a>
+               th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/admin/home}"><i class="fa-solid fa-user-secret"></i>관리자 페이지</a>
           </li>
         </ul>
       </div>
@@ -72,11 +72,13 @@
 <link href="/resource/common/common.css" rel="stylesheet">
 <script src="/resource/common/common.js"></script>
 
-<header layout:fragment="header" class="sticky top-0 z-50 shadow-sm"></header>
+<div class="min-h-screen flex flex-col">
+  <header layout:fragment="header" class="sticky top-0 z-50 shadow-sm"></header>
 
-<main class="flex-1 flex flex-col py-4">
-  <th:block layout:fragment="content"></th:block>
-</main>
+  <main class="flex-1 flex flex-col py-4">
+    <th:block layout:fragment="content"></th:block>
+  </main>
+</div>
 
 </body>
 </html>
