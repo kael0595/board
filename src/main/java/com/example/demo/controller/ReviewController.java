@@ -50,8 +50,8 @@ public class ReviewController {
       return "/review/create";
     }
     SiteUser user = this.userService.getUser(principal.getName());
-    this.reviewService.create(user, reviewForm.getSubject(), reviewForm.getContent());
-    return "/review/create";
+    this.reviewService.create(user, reviewForm);
+    return "redirect:/review/list";
   }
 
   @GetMapping("/detail/{id}")

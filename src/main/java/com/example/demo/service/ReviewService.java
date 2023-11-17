@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.ReviewForm;
 import com.example.demo.entity.Review;
 import com.example.demo.entity.SiteUser;
 import com.example.demo.repository.ReviewRepository;
@@ -19,10 +20,10 @@ public class ReviewService {
     return this.reviewRepository.findAll();
   }
 
-  public void create(SiteUser user, String subject, String content) {
+  public void create(SiteUser user, ReviewForm reviewForm) {
     Review review = new Review();
-    review.setSubject(subject);
-    review.setContent(content);
+    review.setSubject(reviewForm.getSubject());
+    review.setContent(reviewForm.getContent());
     review.setAuthor(user);
     review.setCreateDate(LocalDateTime.now());
     this.reviewRepository.save(review);
