@@ -7,7 +7,12 @@
   <script>
     function IDCheck() {
         var username = $("#username").val();
-        console.log(username);
+
+        if(!username) {
+          alert("사용자 ID를 입력하세요.");
+          return;
+        }
+
         $.ajax({
             url: "/user/checkUsername",
             method: "POST",
@@ -27,7 +32,12 @@
 
      function EmailCheck() {
         var email = $("#email").val();
-        console.log(email);
+
+          if(!email) {
+          alert("사용자 이메일을 입력하세요.");
+          return;
+        }
+
         $.ajax({
             url: "/user/checkEmail",
             method: "POST",
@@ -51,8 +61,48 @@
   <div layout:fragment="content" class="flex-1 flex items-center justify-center">
     <div class="max-w-2xl w-full px-4">
         <h1 class="mb-4">회원가입</h1>
-    <form th:action="@{/user/join}" th:object="${userCreateForm}" method="post" class="flex flex-col gap-6">
 
+      <script>
+        let submitJoinFormDone = false;
+        function submitJoinForm(form) {
+           if (submitJoinFormDone) return;
+
+          form.username.value = form.username.value.trim();
+
+          if(form.username.value.length == 0) {
+            form.username.focus();
+            alert('아이디를 입력해주세요.');
+            return;
+          }
+
+          form.password1.value = form.password1.value.trim();
+
+          if(form.password1.value.length == 0) {
+            form.password1.focus();
+            alert('비밀번호를 입력해주세요.');
+            return;
+          }
+
+          form.password2.value = form.password2.value.trim();
+
+          if(form.password2.value.length == 0) {
+            form.password2.focus();
+            alert('비밀번호 확인을 입력해주세요.');
+            return;
+          }
+
+          form.email.value = form.email.value.trim();
+
+          if(form.email.value.length == 0) {
+            form.email.focus();
+            alert('이메일을 입력해주세요.');
+            return;
+          }
+
+          form.submit();
+        }
+      </script>
+    <form th:action="@{/user/join}" th:object="${userCreateForm}" method="post" onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6">
       <div class="form-control" >
         <label class="label">
           <span class="label-text">사용자 ID </span>
