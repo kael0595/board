@@ -18,6 +18,8 @@ public class SecurityConfig {
   @Bean
   SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
+        .cors()
+        .and()
         .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .requestMatchers("/**").permitAll())
@@ -32,8 +34,7 @@ public class SecurityConfig {
         .logout((logout) -> logout
             .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
             .logoutSuccessUrl("/")
-            .invalidateHttpSession(true))
-    ;
+            .invalidateHttpSession(true));
     return http.build();
   }
 

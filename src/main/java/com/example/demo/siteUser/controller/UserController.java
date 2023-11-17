@@ -46,11 +46,18 @@ public class UserController {
   @PostMapping("/join")
   public String userJoin(@Valid UserCreateForm userCreateForm,
                          @RequestParam("file") MultipartFile file) throws Exception{
-    RsData<SiteUser> joinRs = userService.join(userCreateForm, file);
-    if (joinRs.isFail()){
-      return "redirect:/user/join?failMsg=" + Ut.url.encode(joinRs.getMsg());
+    if (file.isEmpty()){
+      RsData<SiteUser> joinRs = userService.join(userCreateForm);
+      if (joinRs.isFail()){
+        return "redirect:/user/join?failMsg=" + Ut.url.encode(joinRs.getMsg());
+      }
     } else {
-      mailController.sendEmail(userCreateForm.getUsername(),userCreateForm.getEmail());
+      RsData<SiteUser> joinRs = userService.join(userCreateForm, file);
+      if (joinRs.isFail()){
+        return "redirect:/user/join?failMsg=" + Ut.url.encode(joinRs.getMsg());
+      } else {
+        mailController.sendEmail(userCreateForm.getUsername(),userCreateForm.getEmail());
+      }
     }
 
     return "redirect:/";

@@ -43,4 +43,8 @@ public class GenFile {
   private String fileDir;
 
   private String originFileName;
+
+  private String filepath;
+
+  private String filename;
 }

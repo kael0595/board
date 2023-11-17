@@ -1,6 +1,7 @@
 package com.example.demo.siteUser.service;
 
 import com.example.demo.base.RsData;
+import com.example.demo.genFile.entity.GenFile;
 import com.example.demo.genFile.service.GenFileService;
 import com.example.demo.siteUser.entity.SiteUser;
 import com.example.demo.exception.DataNotFoundException.DataNotFoundException;
@@ -38,19 +39,12 @@ public class UserService {
   private String originPath;
 
   @Transactional
-  public RsData<SiteUser> join(UserCreateForm userCreateForm, MultipartFile file) throws IOException {
+  public RsData<SiteUser> join(UserCreateForm userCreateForm, MultipartFile file) throws Exception {
     if (findByUsername(userCreateForm.getUsername()).isPresent()){
       return RsData.of("F-1","%S(은)는 사용중인 아이디입니다.".formatted(userCreateForm.getUsername()));
     }
 
-    String projectPath = genFileDirPath;
-
-    UUID uuid = UUID.randomUUID();
-    String fileName = uuid + "_" + file.getOriginalFilename();
-    String filePath = originPath + fileName;
-
-    File saveFile = new File(projectPath, fileName);
-    file.transferTo(saveFile);
+     GenFile genFile = this.genFileService.upload(file);
 
       SiteUser user = SiteUser.
           builder()
@@ -58,12 +52,25 @@ public class UserService {
           .password(passwordEncoder.encode(userCreateForm.getPassword1()))
           .email(userCreateForm.getEmail())
           .createDate(LocalDateTime.now())
-          .filepath(filePath)
-          .filename(fileName)
+          .filepath(genFile.getFilepath())
+          .filename(genFile.getFilename())
           .build();
       user = userRepository.save(user);
 
         return RsData.of("S-1", "회원가입이 완료되었습니다.", user);
+  }
+
+  public RsData<SiteUser> join(UserCreateForm userCreateForm) {
+    SiteUser user = SiteUser.builder()
+        .username(userCreateForm.getUsername())
+        .password(passwordEncoder.encode(userCreateForm.getPassword1()))
+        .email(userCreateForm.getEmail())
+        .createDate(LocalDateTime.now())
+        .build();
+    user = userRepository.save(user);
+
+    return RsData.of("S-1", "회원가입이 완료되었습니다.", user);
+
   }
 
   private Optional<SiteUser> findByUsername(String username) {
@@ -135,4 +142,6 @@ public class UserService {
   public List<SiteUser> getAll() {
     return this.userRepository.findAll();
   }
+
+
 }

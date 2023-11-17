@@ -155,7 +155,7 @@
         </label>
         <input type="file" accept="image/jpeg, image/png, image/gif" class="file-input file-input-bordered" name="file">
       </div>
-      <button type="submit" onclick="sendMail()" class="btn btn-neutral">회원가입</button>
+      <button type="submit" onclick="uploadFile()" class="btn btn-neutral">회원가입</button>
     </form>
     </div>
   </div>
@@ -176,6 +176,26 @@
               alert("회원가입에 실패했습니다.");
           }
         });
+    }
+
+    function uploadFile(){
+
+    var formData = new FormData();
+    formData.append("file", $("#file")[0].files[0]);
+
+    $.ajax({
+    url: "/user/upload",
+    method: "POST",
+    data: formData,
+    contentType: false,
+    processData: false,
+    success: function(response) {
+    alert("이미지 업로드 성공");
+    },
+    error: function(response) {
+    alert("이미지 업로드 실패");
+    }
+    });
     }
   </script>
 </body>
