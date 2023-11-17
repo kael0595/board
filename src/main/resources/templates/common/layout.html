@@ -1,4 +1,26 @@
-<nav th:fragment="navbarFragment" class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+<!doctype html>
+<html lang="ko">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Hello, sbb!</title>
+  <!-- 제이쿼리 불러오기 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <!-- toastr 불러오기 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+  <link rel="stylesheet" href="https://jhs512.github.io/toastr/toastr.css">
+
+  <!-- 폰트어썸 아이콘 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <!-- 아이콘 목록 : https://fontawesome.com/search?o=r&m=free -->
+
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<header>
   <div class="navbar bg-base-100">
     <div class="navbar-start">
       <div class="dropdown">
@@ -42,4 +64,19 @@
       </button>
     </div>
   </div>
-</nav>
+</header>
+<body>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@3.7.7/dist/full.css" rel="stylesheet" type="text/css"/>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="/resource/common/common.css" rel="stylesheet">
+<script src="/resource/common/common.js"></script>
+
+<header layout:fragment="header" class="sticky top-0 z-50 shadow-sm"></header>
+
+<main class="flex-1 flex flex-col py-4">
+  <th:block layout:fragment="content"></th:block>
+</main>
+
+</body>
+</html>

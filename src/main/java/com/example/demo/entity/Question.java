@@ -38,4 +38,6 @@ public class Question {
   Set<SiteUser> voter;
 
   private int viewCount = 0;
+
+  private String category;
 }

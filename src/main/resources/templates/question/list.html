@@ -1,6 +1,5 @@
-<html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container my-3">
-  <div class="row my-3">
+<html layout:decorate="~{common/layout}">
+  <div layout:fragment="content" class="row my-3">
     <div class="col-6">
       <a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
     </div>
@@ -14,6 +13,7 @@
   <table class="table">
     <thead class="table-dark">
     <tr class="text-center">
+      <th>카테고리</th>
       <th>번호</th>
       <th style="width:50%">제목</th>
       <th>글쓴이</th>
@@ -23,6 +23,7 @@
     </thead>
     <tbody>
     <tr class="text-center" th:each="question, loop : ${paging}">
+      <td th:text="${question.category}"></td>
       <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
       <td class="text-start">
         <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
@@ -63,7 +64,7 @@
     <input type="hidden" id="kw" name="kw" th:value="${kw}">
     <input type="hidden" id="page" name="page" th:value="${paging.number}">
   </form>
-</div>
+</main>
 <script layout:fragment="script" type='text/javascript'>
   const page_elements = document.getElementsByClassName("page-link");
   Array.from(page_elements).forEach(function(element) {

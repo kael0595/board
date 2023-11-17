@@ -16,12 +16,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -85,12 +83,13 @@ public class QuestionService {
     q.setSubject(questionForm.getSubject());
     q.setContent(questionForm.getContent());
     q.setCreateDate(LocalDateTime.now());
+    q.setCategory(questionForm.getCategory());
     q.setAuthor(user);
 
     this.questionRepository.save(q);
   }
 
-  public void modify(Question question, String subject, String content) {
+  public void modify(Question question, String subject, String content, String category) {
     question.setSubject(subject);
     question.setContent(content);
     question.setModifyDate(LocalDateTime.now());

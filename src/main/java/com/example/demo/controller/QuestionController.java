@@ -3,8 +3,10 @@ package com.example.demo.controller;
 import com.example.demo.dto.AnswerForm;
 import com.example.demo.dto.CommentForm;
 import com.example.demo.dto.QuestionForm;
+import com.example.demo.entity.Category;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.SiteUser;
+import com.example.demo.service.CategoryService;
 import com.example.demo.service.QuestionService;
 import com.example.demo.service.UserService;
 import jakarta.validation.Valid;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.List;
 
 
 @Slf4j
@@ -31,6 +34,7 @@ public class QuestionController {
 
   private final QuestionService questionService;
   private final UserService userService;
+  private final CategoryService categoryService;
 
   @GetMapping("/list")
   public String list(Model model, @RequestParam(value="page", defaultValue="0") int page,
@@ -79,6 +83,7 @@ public class QuestionController {
     }
     questionForm.setSubject(question.getSubject());
     questionForm.setContent(question.getContent());
+    questionForm.setCategory(question.getCategory());
     return "/question/create";
   }
 
@@ -93,7 +98,7 @@ public class QuestionController {
     if (!question.getAuthor().getUsername().equals(principal.getName())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
     }
-    this.questionService.modify(question, questionForm.getSubject(), questionForm.getContent());
+    this.questionService.modify(question, questionForm.getSubject(), questionForm.getContent(), questionForm.getCategory());
     return String.format("redirect:/question/detail/%s", id);
   }
 

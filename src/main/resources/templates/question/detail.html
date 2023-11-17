@@ -1,6 +1,6 @@
-<html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container my-3">
-  <!-- 질문 -->
+<html layout:decorate="~{common/layout}">
+<!-- 질문 -->
+<div layout:fragment="content">
   <h2 class="border-bottom py-2" th:text="${question.subject}"></h2>
   <div class="card my-3">
     <div class="card-body">
@@ -113,6 +113,7 @@
     <textarea sec:authorize="isAuthenticated()" th:field="*{content}" id="content" class="form-control" rows="10"></textarea>
     <input type="submit" value="답변등록" class="btn btn-primary my-2">
   </form>
+</div>
 </div>
 <script layout:fragment="script" type='text/javascript'>
   const delete_elements = document.getElementsByClassName("delete");

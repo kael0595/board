@@ -1,16 +1,12 @@
-<!DOCTYPE html>
+<html layout:decorate="~{common/layout}">
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <title>ID/PW 찾기</title>
 </head>
 <body>
-<div th:replace="layout"></div>
-
 <div layout:fragment="content">
   <form onsubmit="return false;">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <div>
       <h1>ID 찾기</h1>
     </div>
