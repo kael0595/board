@@ -64,7 +64,7 @@ public class UserController {
       bindingResult.reject("signupFailed", e.getMessage());
       return "/user/join";
     }
-
+    this.mailController.sendEmail(userCreateForm.getUsername(),userCreateForm.getEmail());
     return "redirect:/";
   }
 

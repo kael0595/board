@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     function IDCheck() {
         var username = $("#username").val();
@@ -45,6 +44,8 @@
             }
         });
     }
+
+
     </script>
     <title>회원가입</title>
   </head>
@@ -73,8 +74,27 @@
         <input type="email" id="email" name="email" th:field="*{email}" class="form-control">
         <input type="button" value="Email 중복확인" id="EmailConfirmButton" th:onclick="EmailCheck()">
       </div>
-      <button type="submit" class="btn btn-primary">회원가입</button>
+      <button type="submit" onclick="sendMail()" class="btn btn-primary">회원가입</button>
     </form>
   </div>
+  <script>
+    function sendMail() {
+    var email = $('#email').val();
+    var username = $('#username').val();
+    console.log(email);
+    console.log(username);
+    $.ajax({
+        url: "/user/sendEmail",
+        method: "POST",
+        data: {email: email}, {username: username},
+        success: function(response) {
+              alert("회원가입에 성공하였습니다.");
+          },
+          error: function(xhr, status, error) {
+              alert("회원가입에 실패했습니다.");
+          }
+        });
+    }
+  </script>
 </body>
 </html>

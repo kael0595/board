@@ -76,4 +76,26 @@ public class MailController {
       throw new DataNotFoundException("error");
     }
   }
+
+  @PostMapping("/user/sendEmail")
+  public void sendEmail(String username, String email) {
+    String from = "admin@sbb.com";//보내는 이 메일주소
+    String to = email;
+    String title = "회원가입을 환영합니다.!";
+    String content = username + "님의 회원가입을 환영합니다. <br/>";
+    try {
+      MimeMessage mail = mailSender.createMimeMessage();
+      MimeMessageHelper mailHelper = new MimeMessageHelper(mail, true, "UTF-8");
+
+      mailHelper.setFrom(from);
+      mailHelper.setTo(to);
+      mailHelper.setSubject(title);
+      mailHelper.setText(content, true);
+
+      mailSender.send(mail);
+
+    } catch (Exception e) {
+      throw new DataNotFoundException("error");
+    }
+  }
 }
