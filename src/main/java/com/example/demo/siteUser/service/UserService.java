@@ -144,4 +144,39 @@ public class UserService {
   }
 
 
+  public RsData checkUsernameDup(String username) {
+    if (findByUsername(username).isPresent()) return RsData.of("F-1", "%s(은)는 사용중인 아이디입니다.".formatted(username));
+
+    return RsData.of("S-1", "%s(은)는 사용 가능한 아이디입니다.".formatted(username));
+  }
+
+
+  public boolean userEmailCheck(String userEmail, String userName) {
+
+    SiteUser user = userRepository.findUserByEmail(userEmail);
+    if (user != null && user.getUsername().equals(userName)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public RsData<String> checkEmailDup(String email) {
+    if (findByEmail(email).isPresent()) return RsData.of("F-1", "%s(은)는 사용중인 이메일입니다.".formatted(email));
+
+    return RsData.of("S-1", "%s(은)는 사용 가능한 이메일 입니다.".formatted(email), email);
+  }
+
+  private Optional<SiteUser> findByEmail(String email) {
+    return userRepository.findByUsername(email);
+
+  }
+
+  public void saveUser(SiteUser siteUser) {
+    this.userRepository.save(siteUser);
+  }
+
+//  public RsData mailConfirm(String email) {
+//
+//  }
 }

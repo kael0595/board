@@ -1,5 +1,7 @@
 package com.example.demo.question.service;
 
+import com.example.demo.genFile.entity.GenFile;
+import com.example.demo.genFile.service.GenFileService;
 import com.example.demo.question.model.QuestionForm;
 import com.example.demo.answer.entity.Answer;
 import com.example.demo.question.entity.Question;
@@ -7,7 +9,9 @@ import com.example.demo.siteUser.entity.SiteUser;
 import com.example.demo.exception.DataNotFoundException.DataNotFoundException;
 import com.example.demo.question.repository.QuestionRepository;
 import jakarta.persistence.criteria.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,16 +20,22 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
 public class QuestionService {
 
   private final QuestionRepository questionRepository;
+
+  private final GenFileService genFileService;
+
+  @Value("${custom.genFileDirPath}")
+  private String genFileDirPath;
+  @Value("${custom.originPath}")
+  private String originPath;
 
   private Specification<Question> search(String kw) {
     return new Specification<>() {
@@ -63,30 +73,38 @@ public class QuestionService {
     }
   }
 
+  @Transactional
   public void create(QuestionForm questionForm, SiteUser user, MultipartFile[] files) throws Exception {
 
-//    List<String> filename = new ArrayList<>();
-//    List<String> filepath = new ArrayList<>();
-//
-//    for (MultipartFile file : files){
-//      UUID uuid = UUID.randomUUID();
-//      String fileName = uuid + "+" + file.getOriginalFilename();
-//      String filePath = originPath + fileName;
-//
-//      File saveFile = new File(genFileDirPath, fileName);
-//      file.transferTo(saveFile);
-//
-//      filename.add(fileName);
-//      filepath.add(filePath);
-//    }
-    Question q = new Question();
-    q.setSubject(questionForm.getSubject());
-    q.setContent(questionForm.getContent());
-    q.setCreateDate(LocalDateTime.now());
-    q.setCategory(questionForm.getCategory());
-    q.setAuthor(user);
+    String projectPath = genFileDirPath;
+    String originPaths = originPath;
 
-    this.questionRepository.save(q);
+    List<String> filename = new ArrayList<>();
+    List<String> filepath = new ArrayList<>();
+
+    for (MultipartFile file : files) {
+      UUID uuid = UUID.randomUUID();
+      String fileName = uuid + "_" + file.getOriginalFilename();
+      String filePath = originPath + "/" + fileName;
+
+      File saveFile = new File(projectPath, fileName);
+      file.transferTo(saveFile);
+
+      filename.add(fileName);
+      filepath.add(filePath);
+    }
+
+    Question question = Question.builder()
+        .subject(questionForm.getSubject())
+        .content(questionForm.getContent())
+        .createDate(LocalDateTime.now())
+        .category(questionForm.getCategory())
+        .filenames(filename)
+        .filePaths(filepath)
+        .author(user)
+        .build();
+
+    this.questionRepository.save(question);
   }
 
   public void modify(Question question, String subject, String content, String category) {

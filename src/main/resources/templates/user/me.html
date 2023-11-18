@@ -9,24 +9,64 @@
   <h1>마이페이지</h1>
   <div>
     <img th:if="${user.filepath != null}" th:src="@{${user.filepath}}" alt="프로필 이미지"/>
-    <div th:text="${user.username}"></div>
-    <div th:text="${user.email}"></div>
-    <div th:text="${user.createDate}"></div>
+    <div>
+      <span>아이디 : </span>
+      <span th:text="${user.username}"></span>
+    </div>
+    <div>
+      <span>이메일 : </span>
+      <span th:text="${user.email}"></span>
+    </div>
+    <div>
+      <span>가입일 : </span>
+      <span th:text="${#temporals.format(user.createDate, 'yyyy-MM-dd HH:mm')}"></span>
+    </div>
+    <form class="flex flex-col">
+      <label>비밀번호</label>
+      <input type="password" id="password1" name="password1" class="password1">
+      <label>비밀번호 확인</label>
+      <input type="password" id="password2" name="password2" class="password2">
+      <button type="button" onclick="passwordConfirm()">비밀번호 변경</button>
+    </form>
     <div>
     </div>
+    <span>내가 쓴 리뷰</span>
     <h5 th:text="|${#lists.size(questionList)}개의 질문이 있습니다.|"></h5>
     <div th:each="question : ${questionList}">
       <div th:text="${question.subject}"></div>
     </div>
+    <span>내가 쓴 답변</span>
     <h5 th:text="|${#lists.size(answerList)}개의 답변이 있습니다.|"></h5>
     <div th:each="answer : ${answerList}">
       <div th:text="${answer.content}"></div>
     </div>
+    <span>내가 쓴 댓글</span>
     <h5 th:text="|${#lists.size(commentList)}개의 댓글이 있습니다.|"></h5>
     <div th:each="comment : ${commentList}">
       <div th:text="${comment.content}"></div>
     </div>
   </div>
 </div>
+<script>
+
+  function passwordConfirm(){
+    var password1 = $(#'password1').val();
+    var password2 = $(#'password2').val();
+    console.log(password1);
+    console.log(password2);
+    $.ajax({
+      url: "/user/update",
+      method: "POST",
+      data: {password1: password1, password2: password2},
+      success: function(){
+          alert('비밀번호 변경 성공');
+      },
+      error(xhr, status, error){
+          alert('비밀번호 변경 실패');
+      }
+    });
+  }
+
+</script>
 </body>
 </html>

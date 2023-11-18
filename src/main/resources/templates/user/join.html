@@ -54,73 +54,73 @@
             }
         });
     }
-    </script>
-    <title>회원가입</title>
-  </head>
-  <body>
-  <div layout:fragment="content" class="flex-1 flex items-center justify-center">
-    <div class="max-w-2xl w-full px-4">
-        <h1 class="mb-4">회원가입</h1>
+  </script>
+  <title>회원가입</title>
+</head>
+<body>
+<div layout:fragment="content" class="flex-1 flex items-center justify-center">
+  <div class="max-w-2xl w-full px-4">
+    <h1 class="mb-4">회원가입</h1>
 
-      <script>
-        let submitJoinFormDone = false;
-        function submitJoinForm(form) {
-           if (submitJoinFormDone) return;
+    <script>
+      let submitJoinFormDone = false;
+      function submitJoinForm(form) {
+         if (submitJoinFormDone) return;
 
-          form.username.value = form.username.value.trim();
+        form.username.value = form.username.value.trim();
 
-          if(form.username.value.length == 0) {
-            form.username.focus();
-            alert('아이디를 입력해주세요.');
-            return;
-          }
-
-          if(form.username.value.length < 4) {
-            form.username.focus();
-            alert('아이디를 4자 이상 입력해주세요.');
-            return;
-          }
-
-          form.password1.value = form.password1.value.trim();
-
-          if(form.password1.value.length == 0) {
-            form.password1.focus();
-            alert('비밀번호를 입력해주세요.');
-            return;
-          }
-
-         if(form.password1.value.length < 8) {
-            form.password1.focus();
-            alert('비밀번호를 8자 이상 입력해주세요.');
-            return;
-          }
-
-          form.password2.value = form.password2.value.trim();
-
-          if(form.password2.value.length == 0) {
-            form.password2.focus();
-            alert('비밀번호 확인을 입력해주세요.');
-            return;
-          }
-
-          if(form.password2.value.length < 8) {
-            form.password2.focus();
-            alert('비밀번호 확인을 8자 이상 입력해주세요.');
-            return;
-          }
-
-          form.email.value = form.email.value.trim();
-
-          if(form.email.value.length == 0) {
-            form.email.focus();
-            alert('이메일을 입력해주세요.');
-            return;
-          }
-
-          form.submit();
-          submitJoinFormDone = true;
+        if(form.username.value.length == 0) {
+          form.username.focus();
+          alert('아이디를 입력해주세요.');
+          return;
         }
-      </script>
+
+        if(form.username.value.length < 4) {
+          form.username.focus();
+          alert('아이디를 4자 이상 입력해주세요.');
+          return;
+        }
+
+        form.password1.value = form.password1.value.trim();
+
+        if(form.password1.value.length == 0) {
+          form.password1.focus();
+          alert('비밀번호를 입력해주세요.');
+          return;
+        }
+
+       if(form.password1.value.length < 8) {
+          form.password1.focus();
+          alert('비밀번호를 8자 이상 입력해주세요.');
+          return;
+        }
+
+        form.password2.value = form.password2.value.trim();
+
+        if(form.password2.value.length == 0) {
+          form.password2.focus();
+          alert('비밀번호 확인을 입력해주세요.');
+          return;
+        }
+
+        if(form.password2.value.length < 8) {
+          form.password2.focus();
+          alert('비밀번호 확인을 8자 이상 입력해주세요.');
+          return;
+        }
+
+        form.email.value = form.email.value.trim();
+
+        if(form.email.value.length == 0) {
+          form.email.focus();
+          alert('이메일을 입력해주세요.');
+          return;
+        }
+
+        form.submit();
+        submitJoinFormDone = true;
+      }
+    </script>
     <form th:action="@{/user/join}" th:object="${userCreateForm}" method="post" enctype="multipart/form-data"
           onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6">
       <div class="form-control" >
@@ -148,6 +148,9 @@
         </label>
         <input type="email" id="email" name="email" th:field="*{email}" class="input input-bordered" maxlength="80">
         <button type="button" class="btn btn-block btn-neutral" id="EmailConfirmButton" th:onclick="EmailCheck()">Email 중복확인</button>
+        <button class="emailCF" type="button" onclick="sendEmailConfirmation()" id="emailCF">
+          인증번호 보내기
+        </button>
       </div>
       <div class="form-control">
         <label class="label">
@@ -157,46 +160,63 @@
       </div>
       <button type="submit" onclick="uploadFile()" class="btn btn-neutral">회원가입</button>
     </form>
-    </div>
   </div>
-  <script>
-    function sendMail() {
-    var email = $('#email').val();
-    var username = $('#username').val();
-    console.log(email);
-    console.log(username);
-    $.ajax({
-        url: "/user/sendEmail",
-        method: "POST",
-        data: {email: email}, {username: username},
-        success: function(response) {
-              alert("회원가입에 성공하였습니다.");
-          },
-          error: function(xhr, status, error) {
-              alert("회원가입에 실패했습니다.");
-          }
+</div>
+<script>
+  function sendMail() {
+  var email = $('#email').val();
+  var username = $('#username').val();
+  console.log(email);
+  console.log(username);
+  $.ajax({
+      url: "/user/sendEmail",
+      method: "POST",
+      data: {email: email}, {username: username},
+      success: function(response) {
+            alert("회원가입에 성공하였습니다.");
+        },
+        error: function(xhr, status, error) {
+            alert("회원가입에 실패했습니다.");
+        }
+      });
+  }
+
+  function uploadFile(){
+
+  var formData = new FormData();
+  formData.append("file", $("#file")[0].files[0]);
+
+  $.ajax({
+  url: "/user/upload",
+  method: "POST",
+  data: formData,
+  contentType: false,
+  processData: false,
+  success: function(response) {
+  alert("이미지 업로드 성공");
+  },
+  error: function(response) {
+  alert("이미지 업로드 실패");
+  }
+  });
+  }
+
+  function sendEmailConfirmation() {
+        // 이메일 주소 가져오기
+        var email = $("#email").val();
+        // AJAX 요청 보내기
+        $.ajax({
+            url: "/mailCheck", // 이메일 인증번호를 보낼 서버의 URL
+            method: "GET",
+            data: {email: email}, // 이메일 주소를 서버로 전달
+            success: function(response) {
+                alert("이메일 인증번호를 전송했습니다.");
+            },
+            error: function(xhr, status, error) {
+                alert("이메일 인증번호 전송에 실패했습니다. 다시 시도해주세요.");
+            }
         });
     }
-
-    function uploadFile(){
-
-    var formData = new FormData();
-    formData.append("file", $("#file")[0].files[0]);
-
-    $.ajax({
-    url: "/user/upload",
-    method: "POST",
-    data: formData,
-    contentType: false,
-    processData: false,
-    success: function(response) {
-    alert("이미지 업로드 성공");
-    },
-    error: function(response) {
-    alert("이미지 업로드 실패");
-    }
-    });
-    }
-  </script>
+</script>
 </body>
 </html>

@@ -13,7 +13,13 @@ import com.example.demo.question.service.QuestionService;
 import com.example.demo.siteUser.service.UserService;
 import com.example.demo.standard.util.Ut;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,11 +38,7 @@ public class UserController {
 
   private final MailController mailController;
 
-  private final QuestionService questionService;
-
-  private final AnswerService answerService;
-
-  private final CommentService commentService;
+ private PasswordEncoder passwordEncoder;
 
   @GetMapping("/join")
   public String join(UserCreateForm userCreateForm) {
@@ -49,7 +51,7 @@ public class UserController {
     if (file.isEmpty()){
       RsData<SiteUser> joinRs = userService.join(userCreateForm);
       if (joinRs.isFail()){
-        return "redirect:/user/join?failMsg=" + Ut.url.encode(joinRs.getMsg());
+        return "/commons/js";
       }
     } else {
       RsData<SiteUser> joinRs = userService.join(userCreateForm, file);
@@ -61,6 +63,31 @@ public class UserController {
     }
 
     return "redirect:/";
+  }
+
+//  @PostMapping("/mailConfirm")
+//  @ResponseBody
+//  public RsData mailConfirm(String email){
+//    return userService.mailConfirm(email);
+//  }
+
+
+  @PreAuthorize("isAnonymous()")
+  @GetMapping("/checkUsernameDup")
+  @ResponseBody
+  public RsData<String> checkUsernameDup(
+      @NotBlank @Length(min = 4) String username
+  ) {
+    return userService.checkUsernameDup(username);
+  }
+
+  @PreAuthorize("isAnonymous()")
+  @GetMapping("/checkEmailDup")
+  @ResponseBody
+  public RsData<String> checkEmailDup(
+      @NotBlank @Length(min = 4) String email
+  ) {
+    return userService.checkEmailDup(email);
   }
 
   @GetMapping("/login")
@@ -108,6 +135,22 @@ public class UserController {
     model.addAttribute("questionList",questionList);
     model.addAttribute("answerList", answerList);
     model.addAttribute("commentList", commentList);
+    return "/user/me";
+  }
+
+  @PostMapping("/me/update")
+  public String update(@RequestParam("password1") String password1,
+                       @RequestParam("passowrd2") String password2,
+                       Principal principal){
+
+    String username = principal.getName();
+    SiteUser siteUser = this.userService.getUser(username);
+
+    if (!password1.equals(password2)){
+      return "변경할 비밀번호와 비밀번호 확인이 일치하지 않습니다.";
+    }
+    siteUser.setPassword(passwordEncoder.encode(password1));
+    userService.saveUser(siteUser);
     return "/user/me";
   }
 

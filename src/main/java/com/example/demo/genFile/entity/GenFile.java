@@ -1,14 +1,15 @@
 package com.example.demo.genFile.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.demo.question.entity.Question;
+import com.example.demo.review.entity.Review;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Entity
 @Setter
@@ -47,4 +48,14 @@ public class GenFile {
   private String filepath;
 
   private String filename;
+
+  @ElementCollection
+  @CollectionTable(name = "gen_file_filenames", joinColumns = @JoinColumn(name = "gen_file_id"))
+  @Column(name = "filename")
+  private List<String> filenames;
+
+  @ElementCollection
+  @CollectionTable(name = "gen_file_file_paths", joinColumns = @JoinColumn(name = "gen_file_id"))
+  @Column(name = "file_path")
+  private List<String> filePaths;
 }

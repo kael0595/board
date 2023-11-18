@@ -36,6 +36,8 @@ public class SiteUser {
 
   private String profileImgPath;
 
+  private int mailAuth;
+
   @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Question> questions;
 

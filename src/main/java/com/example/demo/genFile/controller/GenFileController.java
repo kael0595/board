@@ -22,5 +22,4 @@ public class GenFileController {
     return "true";
   }
 
-
 }
